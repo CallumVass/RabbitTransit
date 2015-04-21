@@ -15,14 +15,6 @@ namespace RabbitTransit.Web.Nancy
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
-        {
-            var bus = BusInitializer.CreateBus("StockPublisher", x => { });
-            container.Register(bus);
-
-            base.ConfigureApplicationContainer(container);
-        }
-
         protected override void ConfigureConventions(NancyConventions nancyConventions)
         {
             base.ConfigureConventions(nancyConventions);
@@ -51,7 +43,8 @@ namespace RabbitTransit.Web.Nancy
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             Conventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat(@"Nancy/Views/", viewName));
-            var bus = container.Resolve<IServiceBus>();
+            var bus = BusInitializer.CreateBus("StockPublisher", x => { });
+            container.Register(bus);
             var random = new Random();
             // This is just a background task checking/updating stock all the time (imagine)
             new Timer(x =>
