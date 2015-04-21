@@ -8,7 +8,6 @@ namespace RabbitTransit.DataAccess
     {
         public DbSet<Product> Products { get; set; }
 
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.AddFromAssembly(typeof(ProductConfiguration).Assembly);

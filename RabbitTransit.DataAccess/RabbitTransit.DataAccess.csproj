@@ -48,9 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201504211003327_Initial.cs" />
-    <Compile Include="Migrations\201504211003327_Initial.Designer.cs">
-      <DependentUpon>201504211003327_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201504211043339_Initial.cs" />
+    <Compile Include="Migrations\201504211043339_Initial.Designer.cs">
+      <DependentUpon>201504211043339_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="RabbitTransitContext.cs" />
@@ -66,8 +66,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504211003327_Initial.resx">
-      <DependentUpon>201504211003327_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504211043339_Initial.resx">
+      <DependentUpon>201504211043339_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

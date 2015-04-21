@@ -11,7 +11,7 @@ namespace RabbitTransit.Web.Nancy.Modules
 
         private dynamic Home(dynamic o)
         {
-            return "hello";
+            return View["index.html"];
         }
     }
 }

@@ -1,8 +1,11 @@
-﻿namespace RabbitTransit.Contracts
+﻿using System;
+
+namespace RabbitTransit.Contracts
 {
     public interface IStockResult
     {
+        int Id { get; set; }
         int StockLevel { get; set; }
-        string ProductNumber { get; set; }
+        DateTime LastUpdated { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 namespace RabbitTransit.DataAccess.Migrations
 {
     using System.CodeDom.Compiler;
-    using System.Data.Entity.Migrations;
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
@@ -13,7 +12,7 @@ namespace RabbitTransit.DataAccess.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201504211003327_Initial"; }
+            get { return "201504211043339_Initial"; }
         }
         
         string IMigrationMetadata.Source
