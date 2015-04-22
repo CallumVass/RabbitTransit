@@ -3,9 +3,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using MassTransit;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.Owin.Hosting;
 using Nancy.Owin;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
 using RabbitTransit.Configuration;
@@ -68,8 +70,7 @@ namespace RabbitTransit.Web
                 .MapSignalR()
                 .UseNancy(Configuration);
 
-            //var settings = new JsonSerializerSettings();
-            //settings.ContractResolver = new SignalRContractResolver();
+            //var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             //var serializer = JsonSerializer.Create(settings);
             //GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () => serializer);
         }
@@ -78,31 +79,5 @@ namespace RabbitTransit.Web
         {
             options.Bootstrapper = new Bootstrapper();
         }
-    }
-
-    public class SignalRContractResolver : IContractResolver
-    {
-        private readonly Assembly _assembly;
-        private readonly IContractResolver _camelCaseContractResolver;
-        private readonly IContractResolver _defaultContractSerializer;
-
-        public SignalRContractResolver()
-        {
-            _defaultContractSerializer = new DefaultContractResolver();
-            _camelCaseContractResolver = new CamelCasePropertyNamesContractResolver();
-            _assembly = typeof(Connection).Assembly;
-        }
-
-        #region IContractResolver Members
-
-        public JsonContract ResolveContract(Type type)
-        {
-            if (type.Assembly.Equals(_assembly))
-                return _defaultContractSerializer.ResolveContract(type);
-
-            return _camelCaseContractResolver.ResolveContract(type);
-        }
-
-        #endregion
     }
 }

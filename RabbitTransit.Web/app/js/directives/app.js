@@ -15,6 +15,7 @@ export default ngModule => {
                 var client = signalRHubProxy("stockHub");
 
                 client.on("stockUpdated", function (data) {
+                    console.log(data);
                     _.forEach(vm.products, function (product) {
                         if (product.id === data.Id) {
                             product.stockLevel = data.StockLevel;
