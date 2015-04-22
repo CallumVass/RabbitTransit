@@ -31,8 +31,8 @@ namespace RabbitTransit.Web.Nancy
             }
         }
 
-        protected override IRootPathProvider RootPathProvider
-        {
+       protected override IRootPathProvider RootPathProvider
+       {
             get { return new SelfHostRootPathProvider(); }
         }
 

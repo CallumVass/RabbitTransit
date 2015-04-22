@@ -5,6 +5,7 @@ using System.Reflection;
 using MassTransit;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Nancy.Owin;
 using Newtonsoft.Json;
@@ -67,6 +68,7 @@ namespace RabbitTransit.Web
         public void Configuration(IAppBuilder app)
         {
             app
+                .UseCors(CorsOptions.AllowAll)
                 .MapSignalR()
                 .UseNancy(Configuration);
 

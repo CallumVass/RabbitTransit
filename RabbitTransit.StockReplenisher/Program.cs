@@ -27,7 +27,7 @@ namespace RabbitTransit.StockReplenisher
 
                 pubBus.Publish(updateStock, y => y.SetDeliveryMode(DeliveryMode.Persistent));
 
-            }, null, 0, random.Next(1000));
+            }, null, 0, random.Next(500));
 
             Console.ReadLine();
         }

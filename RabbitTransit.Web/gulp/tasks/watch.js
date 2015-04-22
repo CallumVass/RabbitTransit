@@ -13,7 +13,7 @@ gulp.task('watch', function () {
             proxies: [
                 {
                     source: '/',
-                    target: 'http://localhost:10000'
+                    target: 'http://localhost:9000'
                 }
             ]
         }));
