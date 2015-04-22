@@ -1,0 +1,18 @@
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Product Number</th>
+        <th>Stock</th>
+        <th>Last Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="product in vm.products | orderBy: 'lastUpdated':true">
+        <td>{{product.id}}</td>
+        <td>{{product.productNumber}}</td>
+        <td>{{product.stockLevel}}</td>
+        <td>{{product.lastUpdated}}</td>
+    </tr>
+    </tbody>
+</table>

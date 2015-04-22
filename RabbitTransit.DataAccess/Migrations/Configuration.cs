@@ -23,7 +23,7 @@ namespace RabbitTransit.DataAccess.Migrations
                         new Product
                         {
                             Id = i < 1 ? i + 1 : i,
-                            ProductNumber = string.Format("Product {0}", i < 1 ? i + 1 : i),
+                            ProductNumber = "test",
                             StockLevel = random.Next(0, 10)
                         }).ToList().ForEach(y => context.Products.AddOrUpdate(x => x.Id, y));
         }

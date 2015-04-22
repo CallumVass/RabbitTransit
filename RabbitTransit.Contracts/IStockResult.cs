@@ -7,5 +7,6 @@ namespace RabbitTransit.Contracts
         int Id { get; set; }
         int StockLevel { get; set; }
         DateTime LastUpdated { get; set; }
+        string ProductNumber { get; set; }
     }
 }

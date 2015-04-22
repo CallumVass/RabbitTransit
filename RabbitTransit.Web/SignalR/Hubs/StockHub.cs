@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNet.SignalR;
-using RabbitTransit.Web.Nancy.ViewModels;
+using RabbitTransit.Contracts.Types;
 
 namespace RabbitTransit.Web.SignalR.Hubs
 {
     public class StockHub : Hub
     {
-        public void UpdateStock(UpdateStockViewModel result)
+        public void UpdateStock(UpdateStock result)
         {
             Clients.All.stockUpdated(result);
         }

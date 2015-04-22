@@ -1,12 +1,12 @@
 ﻿using System;
-using RabbitTransit.Contracts;
 
-namespace RabbitTransit.Web.Nancy.ViewModels
+namespace RabbitTransit.Contracts.Types
 {
-    public class UpdateStockViewModel : IStockResult
+    public class UpdateStock : IStockResult
     {
         public int Id { get; set; }
         public int StockLevel { get; set; }
         public DateTime LastUpdated { get; set; }
+        public string ProductNumber { get; set; }
     }
 }

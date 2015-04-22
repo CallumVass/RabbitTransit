@@ -101,7 +101,6 @@
     <Compile Include="Nancy\Bootstrapper.cs" />
     <Compile Include="Nancy\Modules\HomeModule.cs" />
     <Compile Include="Nancy\Modules\ProductModule.cs" />
-    <Compile Include="Nancy\ViewModels\UpdateStockViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\Hubs\StockHub.cs" />

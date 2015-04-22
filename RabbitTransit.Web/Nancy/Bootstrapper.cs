@@ -1,15 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
-using MassTransit;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Nancy.Responses.Negotiation;
 using Nancy.TinyIoc;
-using RabbitTransit.Configuration;
 using RabbitTransit.DataAccess;
-using RabbitTransit.Web.Nancy.ViewModels;
 
 namespace RabbitTransit.Web.Nancy
 {
@@ -43,23 +39,6 @@ namespace RabbitTransit.Web.Nancy
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             Conventions.ViewLocationConventions.Add((viewName, model, context) => string.Concat(@"Nancy/Views/", viewName));
-            var bus = BusInitializer.CreateBus("StockPublisher", x => { });
-            container.Register(bus);
-            var random = new Random();
-            // This is just a background task checking/updating stock all the time (imagine)
-            new Timer(x =>
-            {
-                var updateStock = new UpdateStockViewModel
-                {
-                    Id = random.Next(1, 1000),
-                    StockLevel = random.Next(0, 10),
-                    LastUpdated = DateTime.Now
-                };
-
-                bus.Publish(updateStock, y => y.SetDeliveryMode(DeliveryMode.Persistent));
-
-            }, null, 0, random.Next(100));
-
             base.ApplicationStartup(container, pipelines);
         }
 

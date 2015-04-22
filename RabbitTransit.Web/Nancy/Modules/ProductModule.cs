@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Nancy;
+using Nancy.Responses.Negotiation;
+using RabbitTransit.Contracts.Types;
 using RabbitTransit.DataAccess;
-using RabbitTransit.Web.Nancy.ViewModels;
 
 namespace RabbitTransit.Web.Nancy.Modules
 {
@@ -18,12 +19,17 @@ namespace RabbitTransit.Web.Nancy.Modules
 
         private dynamic Products(dynamic o)
         {
-            return _context.Products.Select(x => new UpdateStockViewModel
+            var model = _context.Products.Select(x => new UpdateStock
             {
                 Id = x.Id,
+                ProductNumber = x.ProductNumber,
                 LastUpdated = DateTime.Now,
                 StockLevel = x.StockLevel
-            });
+            }).ToList();
+
+            return Negotiate
+                .WithAllowedMediaRange(new MediaRange("application/json"))
+                .WithModel(model);
         }
     }
 }

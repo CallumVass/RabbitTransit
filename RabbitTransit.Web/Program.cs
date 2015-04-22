@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using MassTransit;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.Owin.Hosting;
 using Nancy.Owin;
+using Newtonsoft.Json.Serialization;
 using Owin;
 using RabbitTransit.Configuration;
 using RabbitTransit.Contracts;
@@ -19,7 +21,7 @@ namespace RabbitTransit.Web
         {
             var options = new StartOptions();
             // add however many urls you want to here
-            var urls = new[] { "http://127.0.0.1:3000", "http://localhost:3000" };
+            var urls = new[] { "http://127.0.0.1:9000", "http://localhost:9000" };
             urls.ToList().ForEach(options.Urls.Add);
 
             using (WebApp.Start<Startup>(options))
@@ -39,17 +41,22 @@ namespace RabbitTransit.Web
     {
         public void Consume(IConsumeContext<IStockResult> message)
         {
-            var hubConnection = new HubConnection("http://localhost:3000");
-            var hubProxy = hubConnection.CreateHubProxy("StockHub");
-
-            hubConnection.Start().Wait();
-            hubProxy.Invoke("UpdateStock", message.Message).Wait();
-
             var context = new RabbitTransitContext();
             var product = context.Products.Find(message.Message.Id);
             product.StockLevel = message.Message.StockLevel;
             context.Entry(product).State = EntityState.Modified;
             context.SaveChanges();
+
+            var hubConnection = new HubConnection("http://localhost:9000");
+            var hubProxy = hubConnection.CreateHubProxy("StockHub");
+
+            hubConnection.Start().Wait();
+
+            message.Message.ProductNumber = product.ProductNumber;
+
+            hubProxy.Invoke("UpdateStock", message.Message).Wait();
+
+            hubConnection.Stop();
         }
     }
 
@@ -60,11 +67,42 @@ namespace RabbitTransit.Web
             app
                 .MapSignalR()
                 .UseNancy(Configuration);
+
+            //var settings = new JsonSerializerSettings();
+            //settings.ContractResolver = new SignalRContractResolver();
+            //var serializer = JsonSerializer.Create(settings);
+            //GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () => serializer);
         }
 
         private static void Configuration(NancyOptions options)
         {
             options.Bootstrapper = new Bootstrapper();
         }
+    }
+
+    public class SignalRContractResolver : IContractResolver
+    {
+        private readonly Assembly _assembly;
+        private readonly IContractResolver _camelCaseContractResolver;
+        private readonly IContractResolver _defaultContractSerializer;
+
+        public SignalRContractResolver()
+        {
+            _defaultContractSerializer = new DefaultContractResolver();
+            _camelCaseContractResolver = new CamelCasePropertyNamesContractResolver();
+            _assembly = typeof(Connection).Assembly;
+        }
+
+        #region IContractResolver Members
+
+        public JsonContract ResolveContract(Type type)
+        {
+            if (type.Assembly.Equals(_assembly))
+                return _defaultContractSerializer.ResolveContract(type);
+
+            return _camelCaseContractResolver.ResolveContract(type);
+        }
+
+        #endregion
     }
 }
